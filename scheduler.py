@@ -109,11 +109,11 @@ class Scheduler:
         current_date = datetime.now()
         day_of_week = current_date.weekday()  # Monday is 0, Sunday is 6
 
-        # # 跳过周六周日
-        # # 如果是周六(5)或周日(6)，跳过执行
-        # if day_of_week >= 5:
-        #     logger.info(f"当前为{'周六' if day_of_week == 5 else '周日'}, 跳过定时任务执行")
-        #     return
+        # 跳过周六周日
+        # 如果是周六(5)或周日(6)，跳过执行
+        if day_of_week >= 5:
+            logger.info(f"当前为{'周六' if day_of_week == 5 else '周日'}, 跳过定时任务执行")
+            return
 
         try:
             logger.info("=" * 50)
@@ -161,9 +161,9 @@ class Scheduler:
 
 
 def run_with_schedule(
-        task: Callable,
-        schedule_time: str = "18:00",
-        run_immediately: bool = True
+    task: Callable,
+    schedule_time: str = "18:00",
+    run_immediately: bool = True
 ):
     """
     便捷函数：使用定时调度运行任务
@@ -185,12 +185,10 @@ if __name__ == "__main__":
         format='%(asctime)s | %(levelname)-8s | %(name)-20s | %(message)s',
     )
 
-
     def test_task():
         print(f"任务执行中... {datetime.now()}")
         time.sleep(2)
         print("任务完成!")
-
 
     print("启动测试调度器（按 Ctrl+C 退出）")
     run_with_schedule(test_task, schedule_time="23:59", run_immediately=True)

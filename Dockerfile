@@ -3,7 +3,8 @@
 # ===================================
 # 基于 Python 3.11 slim 镜像，体积小、启动快
 
-FROM python:3.11-slim
+#FROM python:3.11-slim
+FROM python:3.11-slim-bullseye
 
 # 设置工作目录
 WORKDIR /app
@@ -11,6 +12,24 @@ WORKDIR /app
 # 设置时区为上海
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
+# 先查看系统版本
+RUN cat /etc/os-release
+
+# 根据版本设置对应源（示例）
+RUN if grep -q "bullseye" /etc/os-release; then \
+        echo "配置bullseye源..." && \
+        echo "deb http://mirrors.aliyun.com/debian/ bullseye main" > /etc/apt/sources.list; \
+    elif grep -q "bookworm" /etc/os-release; then \
+        echo "配置bookworm源..." && \
+        echo "deb http://mirrors.aliyun.com/debian/ bookworm main" > /etc/apt/sources.list; \
+    elif grep -q "trixie" /etc/os-release; then \
+        echo "配置trixie源..." && \
+        echo "deb http://mirrors.aliyun.com/debian testing main" > /etc/apt/sources.list; \
+    fi && \
+    echo "deb http://mirrors.aliyun.com/debian-security/ bullseye-security main" >> /etc/apt/sources.list
+
 
 # 安装系统依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \

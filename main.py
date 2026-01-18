@@ -24,6 +24,8 @@ A股自选股智能分析系统 - 主调度程序
 import os
 
 # 代理配置 - 仅在本地环境使用，GitHub Actions 不需要
+from convert_markdown_to_html import convert_markdown_to_html
+
 if os.getenv("GITHUB_ACTIONS") != "true":
     # 本地开发环境，如需代理请取消注释或修改端口
     # os.environ["http_proxy"] = "http://127.0.0.1:10809"
@@ -762,6 +764,10 @@ def run_market_review(notifier: NotificationService, analyzer=None, search_servi
                 report_filename
             )
             logger.info(f"大盘复盘报告已保存: {filepath}")
+
+            # 转换 html
+            target_html_path = filepath.replace(".md", ".html")
+            convert_markdown_to_html(filepath, target_html_path)
             
             # 推送通知
             if notifier.is_available():

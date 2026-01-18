@@ -109,11 +109,11 @@ class Scheduler:
         current_date = datetime.now()
         day_of_week = current_date.weekday()  # Monday is 0, Sunday is 6
 
-        # 跳过周六周日
-        # 如果是周六(5)或周日(6)，跳过执行
-        if day_of_week >= 5:
-            logger.info(f"当前为{'周六' if day_of_week == 5 else '周日'}, 跳过定时任务执行")
-            return
+        # # 跳过周六周日
+        # # 如果是周六(5)或周日(6)，跳过执行
+        # if day_of_week >= 5:
+        #     logger.info(f"当前为{'周六' if day_of_week == 5 else '周日'}, 跳过定时任务执行")
+        #     return
 
         try:
             logger.info("=" * 50)

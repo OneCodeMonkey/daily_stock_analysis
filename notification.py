@@ -37,13 +37,13 @@ logger = logging.getLogger(__name__)
 
 class NotificationChannel(Enum):
     """通知渠道类型"""
-    WECHAT = "wechat"      # 企业微信
-    FEISHU = "feishu"      # 飞书
+    WECHAT = "wechat"  # 企业微信
+    FEISHU = "feishu"  # 飞书
     TELEGRAM = "telegram"  # Telegram
-    EMAIL = "email"        # 邮件
+    EMAIL = "email"  # 邮件
     PUSHOVER = "pushover"  # Pushover（手机/桌面推送）
-    CUSTOM = "custom"      # 自定义 Webhook
-    UNKNOWN = "unknown"    # 未知
+    CUSTOM = "custom"  # 自定义 Webhook
+    UNKNOWN = "unknown"  # 未知
 
 
 # SMTP 服务器配置（自动识别）
@@ -220,9 +220,9 @@ class NotificationService:
         return ', '.join([ChannelDetector.get_channel_name(ch) for ch in self._available_channels])
 
     def generate_daily_report(
-        self,
-        results: List[AnalysisResult],
-        report_date: Optional[str] = None
+            self,
+            results: List[AnalysisResult],
+            report_date: Optional[str] = None
     ) -> str:
         """
         生成 Markdown 格式的日报（详细版）
@@ -438,9 +438,9 @@ class NotificationService:
             return ('观望', '⚪', '观望')
 
     def generate_dashboard_report(
-        self,
-        results: List[AnalysisResult],
-        report_date: Optional[str] = None
+            self,
+            results: List[AnalysisResult],
+            report_date: Optional[str] = None
     ) -> str:
         """
         生成决策仪表盘格式的日报（详细版）
@@ -1142,7 +1142,7 @@ class NotificationService:
         for i, chunk in enumerate(chunks):
             # 添加分页标记
             if total_chunks > 1:
-                page_marker = f"\n\n📄 *({i+1}/{total_chunks})*"
+                page_marker = f"\n\n📄 *({i + 1}/{total_chunks})*"
                 chunk_with_marker = chunk + page_marker
             else:
                 chunk_with_marker = chunk
@@ -1150,11 +1150,11 @@ class NotificationService:
             try:
                 if self._send_wechat_message(chunk_with_marker):
                     success_count += 1
-                    logger.info(f"企业微信第 {i+1}/{total_chunks} 批发送成功")
+                    logger.info(f"企业微信第 {i + 1}/{total_chunks} 批发送成功")
                 else:
-                    logger.error(f"企业微信第 {i+1}/{total_chunks} 批发送失败")
+                    logger.error(f"企业微信第 {i + 1}/{total_chunks} 批发送失败")
             except Exception as e:
-                logger.error(f"企业微信第 {i+1}/{total_chunks} 批发送异常: {e}")
+                logger.error(f"企业微信第 {i + 1}/{total_chunks} 批发送异常: {e}")
 
             # 批次间隔，避免触发频率限制
             if i < total_chunks - 1:
@@ -1196,13 +1196,13 @@ class NotificationService:
         logger.info(f"企业微信强制分批发送：共 {total_chunks} 批")
 
         for i, chunk in enumerate(chunks):
-            page_marker = f"\n\n📄 *({i+1}/{total_chunks})*" if total_chunks > 1 else ""
+            page_marker = f"\n\n📄 *({i + 1}/{total_chunks})*" if total_chunks > 1 else ""
 
             try:
                 if self._send_wechat_message(chunk + page_marker):
                     success_count += 1
             except Exception as e:
-                logger.error(f"企业微信第 {i+1}/{total_chunks} 批发送异常: {e}")
+                logger.error(f"企业微信第 {i + 1}/{total_chunks} 批发送异常: {e}")
 
             if i < total_chunks - 1:
                 time.sleep(1)
@@ -1384,7 +1384,7 @@ class NotificationService:
         for i, chunk in enumerate(chunks):
             # 添加分页标记
             if total_chunks > 1:
-                page_marker = f"\n\n📄 ({i+1}/{total_chunks})"
+                page_marker = f"\n\n📄 ({i + 1}/{total_chunks})"
                 chunk_with_marker = chunk + page_marker
             else:
                 chunk_with_marker = chunk
@@ -1392,11 +1392,11 @@ class NotificationService:
             try:
                 if self._send_feishu_message(chunk_with_marker):
                     success_count += 1
-                    logger.info(f"飞书第 {i+1}/{total_chunks} 批发送成功")
+                    logger.info(f"飞书第 {i + 1}/{total_chunks} 批发送成功")
                 else:
-                    logger.error(f"飞书第 {i+1}/{total_chunks} 批发送失败")
+                    logger.error(f"飞书第 {i + 1}/{total_chunks} 批发送失败")
             except Exception as e:
-                logger.error(f"飞书第 {i+1}/{total_chunks} 批发送异常: {e}")
+                logger.error(f"飞书第 {i + 1}/{total_chunks} 批发送异常: {e}")
 
             # 批次间隔，避免触发频率限制
             if i < total_chunks - 1:
@@ -1438,13 +1438,13 @@ class NotificationService:
         logger.info(f"飞书强制分批发送：共 {total_chunks} 批")
 
         for i, chunk in enumerate(chunks):
-            page_marker = f"\n\n📄 ({i+1}/{total_chunks})" if total_chunks > 1 else ""
+            page_marker = f"\n\n📄 ({i + 1}/{total_chunks})" if total_chunks > 1 else ""
 
             try:
                 if self._send_feishu_message(chunk + page_marker):
                     success_count += 1
             except Exception as e:
-                logger.error(f"飞书第 {i+1}/{total_chunks} 批发送异常: {e}")
+                logger.error(f"飞书第 {i + 1}/{total_chunks} 批发送异常: {e}")
 
             if i < total_chunks - 1:
                 time.sleep(1)
@@ -1453,6 +1453,7 @@ class NotificationService:
 
     def _send_feishu_message(self, content: str) -> bool:
         """发送单条飞书消息（优先使用 Markdown 卡片）"""
+
         def _post_payload(payload: Dict[str, Any]) -> bool:
             logger.debug(f"飞书请求 URL: {self._feishu_url}")
             logger.debug(f"飞书请求 payload 长度: {len(content)} 字符")
@@ -1527,6 +1528,7 @@ class NotificationService:
         - 分隔线统一为细线
         - 表格转换为条目列表
         """
+
         def _flush_table_rows(buffer: List[str], output: List[str]) -> None:
             if not buffer:
                 return
@@ -1964,13 +1966,13 @@ class NotificationService:
         return text.strip()
 
     def _send_pushover_message(
-        self,
-        api_url: str,
-        user_key: str,
-        api_token: str,
-        message: str,
-        title: str,
-        priority: int = 0
+            self,
+            api_url: str,
+            user_key: str,
+            api_token: str,
+            message: str,
+            title: str,
+            priority: int = 0
     ) -> bool:
         """
         发送单条 Pushover 消息
@@ -2013,13 +2015,13 @@ class NotificationService:
             return False
 
     def _send_pushover_chunked(
-        self,
-        api_url: str,
-        user_key: str,
-        api_token: str,
-        content: str,
-        title: str,
-        max_length: int
+            self,
+            api_url: str,
+            user_key: str,
+            api_token: str,
+            content: str,
+            title: str,
+            max_length: int
     ) -> bool:
         """
         分段发送长 Pushover 消息
@@ -2070,13 +2072,13 @@ class NotificationService:
 
         for i, chunk in enumerate(chunks):
             # 添加分页标记到标题
-            chunk_title = f"{title} ({i+1}/{total_chunks})" if total_chunks > 1 else title
+            chunk_title = f"{title} ({i + 1}/{total_chunks})" if total_chunks > 1 else title
 
             if self._send_pushover_message(api_url, user_key, api_token, chunk, chunk_title):
                 success_count += 1
-                logger.info(f"Pushover 第 {i+1}/{total_chunks} 批发送成功")
+                logger.info(f"Pushover 第 {i + 1}/{total_chunks} 批发送成功")
             else:
-                logger.error(f"Pushover 第 {i+1}/{total_chunks} 批发送失败")
+                logger.error(f"Pushover 第 {i + 1}/{total_chunks} 批发送失败")
 
             # 批次间隔，避免触发频率限制
             if i < total_chunks - 1:
@@ -2120,22 +2122,22 @@ class NotificationService:
                 # 钉钉机器人对 body 有字节上限（约 20000 bytes），超长需要分批发送
                 if self._is_dingtalk_webhook(url):
                     if self._send_dingtalk_chunked(url, content, max_bytes=20000):
-                        logger.info(f"自定义 Webhook {i+1}（钉钉）推送成功")
+                        logger.info(f"自定义 Webhook {i + 1}（钉钉）推送成功")
                         success_count += 1
                     else:
-                        logger.error(f"自定义 Webhook {i+1}（钉钉）推送失败")
+                        logger.error(f"自定义 Webhook {i + 1}（钉钉）推送失败")
                     continue
 
                 # 其他 Webhook：单次发送
                 payload = self._build_custom_webhook_payload(url, content)
                 if self._post_custom_webhook(url, payload, timeout=30):
-                    logger.info(f"自定义 Webhook {i+1} 推送成功")
+                    logger.info(f"自定义 Webhook {i + 1} 推送成功")
                     success_count += 1
                 else:
-                    logger.error(f"自定义 Webhook {i+1} 推送失败")
+                    logger.error(f"自定义 Webhook {i + 1} 推送失败")
 
             except Exception as e:
-                logger.error(f"自定义 Webhook {i+1} 推送异常: {e}")
+                logger.error(f"自定义 Webhook {i + 1} 推送异常: {e}")
 
         logger.info(f"自定义 Webhook 推送完成：成功 {success_count}/{len(self._custom_webhook_urls)}")
         return success_count > 0
@@ -2239,7 +2241,7 @@ class NotificationService:
         ok = 0
 
         for idx, chunk in enumerate(chunks):
-            marker = f"\n\n📄 *({idx+1}/{total})*" if total > 1 else ""
+            marker = f"\n\n📄 *({idx + 1}/{total})*" if total > 1 else ""
             payload = {
                 "msgtype": "markdown",
                 "markdown": {
@@ -2257,7 +2259,7 @@ class NotificationService:
             if self._post_custom_webhook(url, payload, timeout=30):
                 ok += 1
             else:
-                logger.error(f"钉钉分批发送失败: 第 {idx+1}/{total} 批")
+                logger.error(f"钉钉分批发送失败: 第 {idx + 1}/{total} 批")
 
             if idx < total - 1:
                 _time.sleep(1)
@@ -2410,9 +2412,9 @@ class NotificationService:
         return all_success
 
     def save_report_to_file(
-        self,
-        content: str,
-        filename: Optional[str] = None
+            self,
+            content: str,
+            filename: Optional[str] = None
     ) -> str:
         """
         保存日报到本地文件
@@ -2442,7 +2444,7 @@ class NotificationService:
         logger.info(f"日报已保存到: {filepath}")
 
         # 转换 html
-        target_html_path = filepath.replace(".md", ".html")
+        target_html_path = str(filepath).replace(".md", ".html")
         convert_markdown_to_html(filepath, target_html_path)
 
         return str(filepath)
@@ -2457,9 +2459,9 @@ class NotificationBuilder:
 
     @staticmethod
     def build_simple_alert(
-        title: str,
-        content: str,
-        alert_type: str = "info"
+            title: str,
+            content: str,
+            alert_type: str = "info"
     ) -> str:
         """
         构建简单的提醒消息

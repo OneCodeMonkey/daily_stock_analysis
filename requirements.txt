@@ -38,4 +38,4 @@ httpx[socks]                # HTTP 客户端 + SOCKS 代理支持（OpenAI 可�
 # 数据库
 # SQLite 是 Python 内置，无需额外安装
 
-# markdown
+markdown
